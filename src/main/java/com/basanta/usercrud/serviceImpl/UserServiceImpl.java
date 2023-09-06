@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-@Service
+@Service("abc")
 public class UserServiceImpl implements UserService {
 
 
@@ -56,5 +56,30 @@ public class UserServiceImpl implements UserService {
 	
 	userRepository.delete(deleteUser);
 		
+	}
+
+	@Override
+	public String updateUser(UserPojo userPojo) {
+		// TODO Auto-generated method stub
+		
+		String json = null;
+		
+			User updatedUser=userRepository.findById(userPojo.getId()).orElseThrow();
+			
+			updatedUser.setId(userPojo.getId());
+			updatedUser.setName(userPojo.getName());
+			updatedUser.setUsername(userPojo.getUsername());
+			updatedUser.setRole(userPojo.getRole());
+			
+			userRepository.save(updatedUser);
+			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+	        try {
+				 json = ow.writeValueAsString(updatedUser);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		return json;
 	}
 }

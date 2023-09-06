@@ -1,19 +1,21 @@
 package com.basanta.usercrud.controller;
 
 
-import com.basanta.usercrud.entity.User;
 import com.basanta.usercrud.pojo.UserPojo;
 import com.basanta.usercrud.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
 
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
 
     @PostMapping("/create")
@@ -40,10 +42,11 @@ public class UserController {
     }
     
     
-    @PostMapping("/update/{id}")
-    public ResponseEntity<String> updateUser (@PathVariable("id") Long id, @RequestBody UserPojo userPojo){
+    @PostMapping("/update")
+    public ResponseEntity<String> updateUser (@RequestBody UserPojo userPojo){
     	
+    	String updatedUser = userService.updateUser(userPojo);
     	
-    	return ResponseEntity.ok("Updated Successfully...");
+    	return ResponseEntity.ok("Updated Successfully..." + updatedUser);
     }
 }

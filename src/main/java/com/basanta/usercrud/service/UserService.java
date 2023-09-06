@@ -10,6 +10,8 @@ public interface UserService {
     String viewUser(Long id);
     
     void deleteUser(Long id);
+    
+    String updateUser(UserPojo userPojo);
 
 
 }
